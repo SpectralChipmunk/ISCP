@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+
+<head>
+
+  <link href="../Content/bootstrap.css" rel="stylesheet" />
+  
+  <script src="../Scripts/jquery-1.11.0.min.js"></script>
+  <script src="../Scripts/bootstrap.min.js"></script>
+  <style type="text/css">
+  		img {
+  			display: block;
+  			margin: 9 0 0 0;
+  		}
+  </style>
+</head>
+<body>
+	<img src="iscp.png" width="420px" height="100px"
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <table id="productTable" align="center"
+               class="table table-bordered table-condensed table-striped">
+          <thead>
+            <tr>
+            	<th>Edit</th>
+            	  <th>Student's Name:</th>
+           	   <th>Year Level & Course:</th>
+              <th>Campus:</th>
+              
+              <th>Remove</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            Student Information
+          </div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label for="productname">
+                Student's Name:
+              </label>
+              <input type="text"
+                     class="form-control"
+                     
+                     id="productname" />
+            </div>
+            <div class="form-group">
+              <label for="introdate">
+                Year Level & Course:
+              </label>
+              <input type="text"
+                     class="form-control"
+                     
+                     id="introdate" />
+            </div>
+            <div class="form-group">
+              <label for="url">
+                Campus:
+              </label>
+              <input type="text"
+                     class="form-control"
+                     
+                     id="url" />
+
+
+
+
+
+
+
+             		   
+
+             		
+            </div>
+          </div>
+          <div class="panel-footer">
+            <div class="row">
+              <div class="col-xs-12">
+                <button type="button" id="updateButton"
+                        class="btn btn-primary"
+                        onclick="productUpdate();">
+                  Add
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Current product being edited
+    var editRow = null;
+
+    function productDisplay(ctl) {
+      editRow = $(ctl).parents("tr");
+      var cols = editRow.children("td");
+
+      $("#productname").val($(cols[1]).text());
+      $("#introdate").val($(cols[2]).text());
+      $("#url").val($(cols[3]).text());
+
+      // Change Update Button Text
+      $("#updateButton").text("Update");
+    }
+
+    function productUpdate() {
+      if ($("#updateButton").text() == "Update") {
+        productUpdateInTable();
+      }
+      else {
+        productAddToTable();
+      }
+
+      // Clear form fields
+      formClear();
+
+      // Focus to product name field
+      $("#productname").focus();
+    }
+
+    // Add product to <table>
+    function productAddToTable() {
+      // First check if a <tbody> tag exists, add one if not
+      if ($("#productTable tbody").length == 0) {
+        $("#productTable").append("<tbody></tbody>");
+      }
+
+      // Append product to table
+      $("#productTable tbody").append(
+        productBuildTableRow());
+    }
+
+    // Update product in <table>
+    function productUpdateInTable() {
+      // Add changed product to table
+      $(editRow).after(productBuildTableRow());
+
+      // Remove original product
+      $(editRow).remove();
+
+      // Clear form fields
+      formClear();
+
+      // Change Update Button Text
+      $("#updateButton").text("Add");
+    }
+
+    // Build a <table> row of Product data
+    function productBuildTableRow() {
+      var ret =
+      "<tr>" +
+        "<td>" +
+          "<button type='button' " +
+                  "onclick='productDisplay(this);' " +
+                  "class='btn btn-default'>" +
+                  "<span class='glyphicon glyphicon-edit' />" +
+          "</button>" +
+        "</td>" +
+        "<td>" + $("#productname").val() + "</td>" +
+        "<td>" + $("#introdate").val() + "</td>" +
+        "<td>" + $("#url").val() + "</td>" +
+        "<td>" +
+          "<button type='button' " +
+                  "onclick='productDelete(this);' " +
+                  "class='btn btn-default'>" +
+                  "<span class='glyphicon glyphicon-remove' />" +
+          "</button>" +
+        "</td>" +
+      "</tr>"
+
+      return ret;
+    }
+
+    // Delete product from <table>
+    function productDelete(ctl) {
+      $(ctl).parents("tr").remove();
+    }
+
+    // Clear form fields
+    function formClear() {
+      $("#productname").val("");
+      $("#introdate").val("");
+      $("#url").val("");
+    }
+  </script>
+</body>
+</html>
